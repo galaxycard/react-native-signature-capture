@@ -263,6 +263,7 @@ public class RSSignatureCaptureView extends View {
 				resetDirtyRect(eventX, eventY);
 				addPoint(new TimedPoint(eventX, eventY));
                 dragged = true;
+				sendDragEventToReact();
 				break;
 
 			case MotionEvent.ACTION_UP:
@@ -271,7 +272,6 @@ public class RSSignatureCaptureView extends View {
                     addPoint(new TimedPoint(eventX, eventY));
                     getParent().requestDisallowInterceptTouchEvent(true);
                     setIsEmpty(false);
-                    sendDragEventToReact();
 			    }
                 dragged = false;
                 multipleTouchDragged = false;
