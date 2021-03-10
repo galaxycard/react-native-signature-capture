@@ -1,15 +1,25 @@
 package com.rssignaturecapture;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.uimanager.ThemedReactContext;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,9 +46,7 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
   int mOriginalOrientation;
   Boolean saveFileInExtStorage = false;
   String viewMode = "portrait";
-  Boolean showBorder = true;
   Boolean showNativeButtons = true;
-  Boolean showTitleLabel = true;
   int maxSize = 500;
 
   public RSSignatureCaptureMainView(Context context, Activity activity) {
@@ -158,12 +166,12 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
 
       Log.d("React Signature", "Save file-======:" + saveFileInExtStorage);
       // save the signature
-      if (saveFileInExtStorage) {
+//      if (saveFileInExtStorage) {
         FileOutputStream out = new FileOutputStream(file);
         this.signatureView.getSignature().compress(Bitmap.CompressFormat.PNG, 90, out);
         out.flush();
         out.close();
-      }
+//      }
 
 
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -205,6 +213,19 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
   public void reset() {
     if (this.signatureView != null) {
       this.signatureView.clearSignature();
+
+      String root = saveFileInExtStorage ? Environment.getExternalStorageDirectory().toString() : getContext().getFilesDir().getAbsolutePath();
+
+      // the directory where the signature will be saved
+      File myDir = new File(root + "/saved_signature");
+
+      // set the file name of your choice
+      String fname = "signature.png";
+
+      File file = new File(myDir, fname);
+      if (file.exists()) {
+        file.delete();
+      }
     }
   }
 
