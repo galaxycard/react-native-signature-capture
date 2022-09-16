@@ -13,12 +13,12 @@ public class RSSignatureCapturePackage implements ReactPackage {
 
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-    return Arrays.<NativeModule>asList();
+    return Arrays.asList(new RSSignatureCaptureModule(reactContext));
   }
 
   @Override
   public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-    return Arrays.<ViewManager>asList(new RSSignatureCaptureViewManager(reactContext));
+    return Arrays.asList(new RSSignatureCaptureViewManager(reactContext));
   }
 
   public List<Class<? extends JavaScriptModule>> createJSModules() {

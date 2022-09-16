@@ -1,25 +1,19 @@
 package com.rssignaturecapture;
 
-import android.app.Activity;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 
-public class RSSignatureCaptureContextModule extends ReactContextBaseJavaModule {
+public class RSSignatureCaptureModule extends ReactContextBaseJavaModule {
 
-    public RSSignatureCaptureContextModule(ReactApplicationContext reactContext) {
+    public RSSignatureCaptureModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
         return "RSSignatureContextModule";
-    }
-
-    public Activity getActivity() {
-        return this.getCurrentActivity();
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)

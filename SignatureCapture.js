@@ -8,8 +8,11 @@ var {
     requireNativeComponent,
     View,
     UIManager,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    NativeModules
 } = ReactNative;
+
+const { RSSignatureContextModule } = NativeModules;
 
 class SignatureCapture extends React.Component {
 
@@ -85,6 +88,10 @@ class SignatureCapture extends React.Component {
             UIManager.getViewManagerConfig('RSSignatureView').Commands.resetImage,
             [],
         );
+    }
+
+    saveImageAndReturn() {
+        return RSSignatureContextModule.saveImageAndReturn(ReactNative.findNodeHandle(this));
     }
 }
 

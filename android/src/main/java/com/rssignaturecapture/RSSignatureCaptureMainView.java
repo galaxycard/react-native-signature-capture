@@ -192,6 +192,43 @@ public class RSSignatureCaptureMainView extends LinearLayout implements OnClickL
     }
   }
 
+  final WritableMap saveImageAndReturn() {
+    WritableMap map = Arguments.createMap();
+    String root = saveFileInExtStorage ? Environment.getExternalStorageDirectory().toString() : getContext().getFilesDir().getAbsolutePath();
+    // the directory where the signature will be saved
+    File myDir = new File(root + "/saved_signature");
+    // make the directory if it does not exist yet
+    if (!myDir.exists()) {
+      myDir.mkdirs();
+    }
+    // set the file name of your choice
+    String fname = "signature.png";
+    // in our case, we delete the previous file, you can remove this
+    File file = new File(myDir, fname);
+    if (file.exists()) {
+      file.delete();
+    }
+    try {
+      Log.d("React Signature", "Save file-======:" + saveFileInExtStorage);
+      // save the signature
+//      if (saveFileInExtStorage) {
+      FileOutputStream out = new FileOutputStream(file);
+      this.signatureView.getSignature().compress(Bitmap.CompressFormat.PNG, 90, out);
+      out.flush();
+      out.close();
+//      }
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      Bitmap resizedBitmap = getResizedBitmap(this.signatureView.getSignature());
+      resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+      byte[] byteArray = byteArrayOutputStream.toByteArray();
+      String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+      map.putString("pathName", file.getAbsolutePath());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return map;
+  }
+
   public Bitmap getResizedBitmap(Bitmap image) {
     Log.d("React Signature","maxSize:"+maxSize);
     int width = image.getWidth();
